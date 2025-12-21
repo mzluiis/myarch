@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyArch</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><text y='50' font-size='50'>🐧</text></svg>">
+<style>
+    body {
+        background-color: #1e1e1e;
+        color: #e0e0e0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        line-height: 1.6;
+        display: flex;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 900px;
+        width: 100%;
+    }
+
+    h1 {
+        text-align: center;
+        color: #ffffff;
+        margin-bottom: 30px;
+    }
+
+    details {
+        background-color: #2c2c2c;
+        border-radius: 10px;
+        padding: 15px 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    details[open] {
+        transform: scale(1.01);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+    }
+
+    summary {
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 1.2em;
+        outline: none;
+    }
+
+    pre {
+        background-color: #272727;
+        color: #f8f8f2;
+        padding: 12px 12px 12px 12px;
+        border-radius: 6px;
+        font-family: monospace;
+        overflow-x: auto;
+        position: relative;
+        margin: 10px 0;
+        transition: background 0.2s ease;
+    }
+
+    pre:hover {
+        background-color: #323232;
+    }
+
+    .copy-btn {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        background-color: #4ea3ff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        padding: 2px 6px;
+        cursor: pointer;
+        font-size: 0.9em;
+        transition: background-color 0.2s ease;
+    }
+
+    .copy-btn:hover {
+        background-color: #3a7ac1;
+    }
+
+    ul {
+        margin: 10px 0 10px 20px;
+    }
+
+    a {
+        color: #4ea3ff;
+    }
+
+    h3 {
+        margin-top: 15px;
+        margin-bottom: 8px;
+        color: #ffffff;
+    }
+
+    code {
+        font-family: monospace;
+        color: #f8f8f2;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>MyArch 🐧</h1>
+
+    <details>
+        <summary>🔧 Kernel Boot Settings</summary>
+        <h3>🧠 CPU</h3>
+        <ul>
+            <li><code>amd_pstate=active</code> → fastest boost logic</li>
+            <li>No forced governor → allows higher single-core boosts</li>
+            <li><code>idle=nomwait</code> → lowest latency</li>
+            <li><code>mitigations=off</code> → max performance</li>
+        </ul>
+        <h3>🎮 GPU</h3>
+        <ul>
+            <li><code>amdgpu.ppfeaturemask=0xffffffff</code> → unlock all RDNA2 states</li>
+            <li><code>amdgpu.dpm=1</code> + <code>amdgpu.powerplay=1</code> → highest clocks</li>
+            <li><code>transparent_hugepage=always</code> → better memory throughput</li>
+        </ul>
+        <h3>⚙️ System</h3>
+        <ul>
+            <li><code>rootflags=noatime</code> → reduced I/O overhead</li>
+            <li><code>zswap.enabled=0</code> → zero compression latency</li>
+        </ul>
+        <pre><code>options root=PARTUUID=9e4e2dad-478b-422b-841d-f7dab32b5a45 rw rootfstype=ext4 rootflags=noatime amd_pstate=active amdgpu.ppfeaturemask=0xffffffff amdgpu.dpm=1 amdgpu.powerplay=1 transparent_hugepage=always idle=nomwait mitigations=off zswap.enabled=0</code>
+            <button class="copy-btn" onclick="copyCode(this)">📋</button>
+        </pre>
+    </details>
+
+    <details>
+        <summary>🎮 Best GPU Performance for Games</summary>
+        <pre><code>sudo nano /etc/environment</code>
+            <button class="copy-btn" onclick="copyCode(this)">📋</button>
+        </pre>
+        <pre><code>RADV_PERFTEST=aco
+RADV_DEBUG=nohiz
+RADV_FORCE_VRS=1
+RADV_SHADER_CACHE_SYNC=0
+MESA_GLTHREAD=true</code>
+            <button class="copy-btn" onclick="copyCode(this)">📋</button>
+        </pre>
+        <pre><code>echo high | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_level</code>
+            <button class="copy-btn" onclick="copyCode(this)">📋</button>
+        </pre>
+    </details>
+
+    <details>
+        <summary>🔊 PS5 Audio Loopback Script</summary>
+        <pre><code>#!/bin/bash
+SOURCE="alsa_input.usb-0d8c_USB_Sound_Device-00.analog-stereo"
+SINK="alsa_output.usb-Kingston_HyperX_Cloud_II_Wireless_000000000001-00.analog-stereo"
+STATE_FILE="$HOME/.dp1_state"
+LOOPBACK_FILE="$HOME/.loopback_module_id"
+
+if [ -f "$STATE_FILE" ]; then STATE=$(cat "$STATE_FILE"); else STATE="enabled"; fi
+
+if [ "$STATE" = "enabled" ]; then
+    kscreen-doctor output.DP-1.disable
+    echo "disabled" > "$STATE_FILE"
+    if [ ! -f "$LOOPBACK_FILE" ]; then
+        MODULE_ID=$(pactl load-module module-loopback source="$SOURCE" sink="$SINK" latency_msec=10)
+        echo "$MODULE_ID" > "$LOOPBACK_FILE"
+    fi
+    notify-send -i video-display "DP-1 desligado" "Audio loopback ON"
+else
+    kscreen-doctor output.DP-1.enable output.DP-1.primary
+    echo "enabled" > "$STATE_FILE"
+    if [ -f "$LOOPBACK_FILE" ]; then
+        pactl unload-module "$(cat "$LOOPBACK_FILE")"
+        rm -f "$LOOPBACK_FILE"
+    fi
+    notify-send -i video-display "DP-1 ligado" "Audio loopback OFF"
+fi</code>
+            <button class="copy-btn" onclick="copyCode(this)">📋</button>
+        </pre>
+    </details>
+
+    <details>
+        <summary>🔊 Best Themes</summary>
+            <ul>
+                <li><a href="https://gitlab.com/pwyde/monochrome-kde" target="_blank" rel="noopener noreferrer">https://gitlab.com/pwyde/monochrome-kde</a></li>
+            </ul>
+        </pre>
+    </details>
+</div>
+
+
+
+<script>
+function copyCode(button) {
+    const code = button.parentElement.querySelector('code').innerText;
+    navigator.clipboard.writeText(code).then(() => {
+        button.innerText = '✔️';
+        setTimeout(() => button.innerText = '📋', 1500);
+    });
+}
+</script>
+</body>
+</html>
