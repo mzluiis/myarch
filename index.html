@@ -1,123 +1,162 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- ================= META ================= -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyArch</title>
+<!-- ================= META ================= -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyArch</title>
 
-    <!-- ================= FAVICON ================= -->
-    <link rel="icon" href="data:image/svg+xml,
-        <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'>
-            <text y='50' font-size='50'>🐧</text>
-        </svg>">
+<!-- ================= FAVICON ================= -->
+<link rel="icon" href="data:image/svg+xml,
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'>
+<text y='50' font-size='50'>🐧</text>
+</svg>">
 
-    <!-- ================= STYLE ================= -->
-    <style>
-        body {
-            background-color: #1e1e1e;
-            color: #e0e0e0;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont,
-                         "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            line-height: 1.6;
-            display: flex;
-            justify-content: center;
-            padding: 20px;
-        }
+<!-- ================= STYLE ================= -->
+<style>
+/* ============ GLOBAL ============ */
+body {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont,
+                 "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
 
-        .container {
-            max-width: 900px;
-            width: 100%;
-        }
+.container {
+    max-width: 900px;
+    width: 100%;
+}
 
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+/* ============ ARCH HEADER ============ */
+.arch-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+    animation: arch-boot 1.8s cubic-bezier(.25,.8,.25,1) both;
+}
 
-        /* ===== Collapsible blocks ===== */
-        details {
-            background-color: #2c2c2c;
-            border-radius: 10px;
-            padding: 15px 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
+.arch-logo {
+    width: 96px;
+    height: 96px;
+    fill: #1793d1;
+    margin-bottom: 10px;
+    animation:
+        arch-float 4s ease-in-out infinite,
+        arch-glow 3s ease-in-out infinite;
+}
 
-        details[open] {
-            transform: scale(1.01);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.4);
-        }
+@keyframes arch-boot {
+    0% {
+        opacity: 0;
+        transform: translateY(40px) scale(0.85);
+        filter: blur(8px);
+    }
+    60% {
+        opacity: 1;
+        transform: translateY(-6px) scale(1.04);
+        filter: blur(0);
+    }
+    100% {
+        transform: translateY(0) scale(1);
+    }
+}
 
-        summary {
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 1.2em;
-        }
+@keyframes arch-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
 
-        h3 {
-            margin-top: 15px;
-            margin-bottom: 8px;
-        }
+@keyframes arch-glow {
+    0%, 100% {
+        filter: drop-shadow(0 0 8px rgba(23,147,209,0.5));
+    }
+    50% {
+        filter: drop-shadow(0 0 18px rgba(23,147,209,1));
+    }
+}
 
-        ul {
-            margin-left: 20px;
-        }
+h1 {
+    margin: 0;
+}
 
-        a {
-            color: #4ea3ff;
-        }
+/* ============ DETAILS ============ */
+details {
+    background-color: #2c2c2c;
+    border-radius: 10px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
 
-        /* ===== Code blocks ===== */
-        pre {
-            background-color: #272727;
-            padding: 12px;
-            border-radius: 6px;
-            font-family: monospace;
-            white-space: pre-wrap;
-            word-break: break-word;
-            position: relative;
-            margin: 10px 0;
-        }
+summary {
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1.2em;
+}
 
-        pre:hover {
-            background-color: #323232;
-        }
+h3 {
+    margin-top: 15px;
+    margin-bottom: 8px;
+}
 
-        code {
-            color: #f8f8f2;
-        }
+ul {
+    margin-left: 20px;
+}
 
-        /* ===== Copy button ===== */
-        .copy-btn {
-            position: absolute;
-            top: 6px;
-            right: 6px;
-            background: none;
-            color: #f8f8f2;
-            border: none;
-            cursor: pointer;
-            font-size: 0.9em;
-        }
+a {
+    color: #4ea3ff;
+}
 
-        .copy-btn:hover {
-            color: #4ea3ff;
-        }
-    </style>
+/* ============ CODE BLOCKS ============ */
+pre {
+    background-color: #272727;
+    padding: 12px;
+    border-radius: 6px;
+    font-family: monospace;
+    white-space: pre-wrap;
+    position: relative;
+    margin: 10px 0;
+}
+
+code {
+    color: #f8f8f2;
+}
+
+/* Copy button */
+.copy-btn {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: none;
+    color: #f8f8f2;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.copy-btn:hover {
+    color: #4ea3ff;
+}
+</style>
 </head>
 
 <body>
 <div class="container">
 
-<!-- ================================================= -->
-<!-- =================== HEADER ====================== -->
-<!-- ================================================= -->
-<h1>MyArch 🐧</h1>
+<!-- ============ HEADER ============ -->
+<div class="arch-header">
+    <svg class="arch-logo" viewBox="0 0 256 256">
+        <path d="M128 0C91 68 52 137 0 192c40-14 83-20 128-20s88 6 128 20C204 137 165 68 128 0z"/>
+    </svg>
+    <h1>MyArch 🐧</h1>
+</div>
 
-<!-- ================================================= -->
-<!-- ============ KERNEL BOOT SETTINGS =============== -->
-<!-- ================================================= -->
+<!-- ============ KERNEL BOOT SETTINGS ============ -->
 <details>
 <summary>🔧 Kernel Boot Settings</summary>
 
@@ -130,29 +169,26 @@
 
 <h3>🎮 GPU</h3>
 <ul>
-    <li><code>amdgpu.ppfeaturemask=0xffffffff</code> → unlock all RDNA2 states</li>
-    <li><code>amdgpu.dpm=1</code> + <code>amdgpu.powerplay=1</code> → max clocks</li>
-    <li><code>transparent_hugepage=always</code> → better memory throughput</li>
+    <li><code>amdgpu.ppfeaturemask=0xffffffff</code></li>
+    <li><code>amdgpu.dpm=1</code> + <code>amdgpu.powerplay=1</code></li>
+    <li><code>transparent_hugepage=always</code></li>
 </ul>
 
 <h3>⚙️ System</h3>
 <ul>
-    <li><code>rootflags=noatime</code> → reduced I/O</li>
-    <li><code>zswap.enabled=0</code> → zero latency</li>
+    <li><code>rootflags=noatime</code></li>
+    <li><code>zswap.enabled=0</code></li>
 </ul>
 
 <pre>
 <code>root=PARTUUID=9e4e2dad-478b-422b-841d-f7dab32b5a45 rw rootfstype=ext4 rootflags=noatime amd_pstate=active amdgpu.ppfeaturemask=0xffffffff amdgpu.dpm=1 amdgpu.powerplay=1 transparent_hugepage=always idle=nomwait mitigations=off zswap.enabled=0</code>
 <button class="copy-btn" onclick="copyCode(this)">📋</button>
 </pre>
-
 </details>
 
-<!-- ================================================= -->
-<!-- ============ GPU PERFORMANCE ==================== -->
-<!-- ================================================= -->
+<!-- ============ GPU PERFORMANCE ============ -->
 <details>
-<summary>🎮 Best GPU Performance (RADV / Mesa)</summary>
+<summary>🎮 Best GPU Performance</summary>
 
 <pre>
 <code>sudo nano /etc/environment</code>
@@ -172,12 +208,9 @@ MESA_GLTHREAD=true</code>
 <code>echo high | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_level</code>
 <button class="copy-btn" onclick="copyCode(this)">📋</button>
 </pre>
-
 </details>
 
-<!-- ================================================= -->
-<!-- ============ PS5 AUDIO LOOPBACK ================= -->
-<!-- ================================================= -->
+<!-- ============ PS5 AUDIO LOOPBACK ============ -->
 <details>
 <summary>🔊 PS5 Audio Loopback Script</summary>
 
@@ -185,7 +218,6 @@ MESA_GLTHREAD=true</code>
 <code>#!/bin/bash
 SOURCE="alsa_input.usb-0d8c_USB_Sound_Device-00.analog-stereo"
 SINK="alsa_output.usb-Kingston_HyperX_Cloud_II_Wireless_000000000001-00.analog-stereo"
-
 STATE_FILE="$HOME/.dp1_state"
 LOOPBACK_FILE="$HOME/.loopback_module_id"
 
@@ -194,30 +226,19 @@ STATE=$(cat "$STATE_FILE" 2>/dev/null || echo enabled)
 if [ "$STATE" = "enabled" ]; then
     kscreen-doctor output.DP-1.disable
     echo disabled > "$STATE_FILE"
-
-    if [ ! -f "$LOOPBACK_FILE" ]; then
-        pactl load-module module-loopback source="$SOURCE" sink="$SINK" latency_msec=10 > "$LOOPBACK_FILE"
-    fi
-
-    notify-send "DP-1 desligado" "Audio loopback ON"
+    pactl load-module module-loopback source="$SOURCE" sink="$SINK" latency_msec=10 > "$LOOPBACK_FILE"
 else
     kscreen-doctor output.DP-1.enable output.DP-1.primary
     echo enabled > "$STATE_FILE"
-
-    [ -f "$LOOPBACK_FILE" ] && pactl unload-module "$(cat "$LOOPBACK_FILE")" && rm "$LOOPBACK_FILE"
-
-    notify-send "DP-1 ligado" "Audio loopback OFF"
+    pactl unload-module "$(cat "$LOOPBACK_FILE")"
 fi</code>
 <button class="copy-btn" onclick="copyCode(this)">📋</button>
 </pre>
-
 </details>
 
-<!-- ================================================= -->
-<!-- ============ KEYBOARD FIX ======================= -->
-<!-- ================================================= -->
+<!-- ============ KEYBOARD FIX ============ -->
 <details>
-<summary>🎹 Keyboard Fix (Apple HID)</summary>
+<summary>🎹 Keyboard Fix</summary>
 
 <pre>
 <code>sudo nano /etc/modprobe.d/hid_apple.conf</code>
@@ -225,39 +246,30 @@ fi</code>
 </pre>
 
 <pre>
-<code>options hid_apple fnmode=2</code>
+<code>options hid_apple swap_opt_cmd=1 fnmode=2</code>
 <button class="copy-btn" onclick="copyCode(this)">📋</button>
 </pre>
-
 </details>
 
-<!-- ================================================= -->
-<!-- ============ THEMES ============================= -->
-<!-- ================================================= -->
+<!-- ============ THEMES ============ -->
 <details>
 <summary>🎨 KDE Themes</summary>
-
 <ul>
     <li>
         <a href="https://gitlab.com/pwyde/monochrome-kde" target="_blank">
-            Monochrome KDE Theme
+            Monochrome KDE
         </a>
     </li>
 </ul>
-
 </details>
 
 </div>
 
-<!-- ================================================= -->
-<!-- ================= JAVASCRIPT ==================== -->
-<!-- ================================================= -->
+<!-- ============ JS ============ -->
 <script>
-/* Copy code from the closest <pre><code> block */
 function copyCode(button) {
     const pre = button.closest("pre");
     const code = pre.querySelector("code").textContent;
-
     navigator.clipboard.writeText(code).then(() => {
         const old = button.textContent;
         button.textContent = "✔️";
