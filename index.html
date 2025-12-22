@@ -51,10 +51,12 @@
     pre {
         background-color: #272727;
         color: #f8f8f2;
-        padding: 12px 12px 12px 12px;
+        padding: 12px;
         border-radius: 6px;
         font-family: monospace;
-        overflow-x: auto;
+        overflow-x: visible;
+        white-space: pre-wrap;
+        word-break: break-word;
         position: relative;
         margin: 10px 0;
         transition: background 0.2s ease;
@@ -68,18 +70,16 @@
         position: absolute;
         top: 6px;
         right: 6px;
-        background-color: #4ea3ff;
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        padding: 2px 6px;
+        background: none;        /* remove background */
+        color: #f8f8f2;          /* match code text */
+        border: none;             /* remove border */
+        padding: 0;               /* no padding */
         cursor: pointer;
         font-size: 0.9em;
-        transition: background-color 0.2s ease;
     }
 
     .copy-btn:hover {
-        background-color: #3a7ac1;
+        color: #4ea3ff;          /* optional hover color */
     }
 
     ul {
@@ -101,6 +101,7 @@
         color: #f8f8f2;
     }
 </style>
+
 </head>
 <body>
 <div class="container">
@@ -180,8 +181,9 @@ fi</code>
     </details>
 
     <details>
-        <summary>🔊 Best Themes</summary>
+        <summary>🎨 Best Themes</summary>
             <ul>
+                <li>git add . && git commit -m "." && git push origin main</li>
                 <li><a href="https://gitlab.com/pwyde/monochrome-kde" target="_blank" rel="noopener noreferrer">https://gitlab.com/pwyde/monochrome-kde</a></li>
             </ul>
         </pre>
@@ -190,6 +192,7 @@ fi</code>
 
 
 
+<script>
 <script>
 function copyCode(button) {
     const code = button.parentElement.querySelector('code').innerText;
