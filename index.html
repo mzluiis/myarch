@@ -159,60 +159,6 @@ code {
     <h1>MyArch 🐧</h1>
 </div>
 
-<!-- ============ KERNEL BOOT SETTINGS ============ -->
-<details>
-<summary>🔧 Kernel Boot Settings</summary>
-
-<h3>🧠 CPU</h3>
-<ul>
-    <li><code>amd_pstate=active</code> → fastest boost logic</li>
-    <li><code>idle=nomwait</code> → lowest latency</li>
-    <li><code>mitigations=off</code> → max performance</li>
-</ul>
-
-<h3>🎮 GPU</h3>
-<ul>
-    <li><code>amdgpu.ppfeaturemask=0xffffffff</code></li>
-    <li><code>amdgpu.dpm=1</code> + <code>amdgpu.powerplay=1</code></li>
-    <li><code>transparent_hugepage=always</code></li>
-</ul>
-
-<h3>⚙️ System</h3>
-<ul>
-    <li><code>rootflags=noatime</code></li>
-    <li><code>zswap.enabled=0</code></li>
-</ul>
-
-<pre>
-<code>root=PARTUUID=9e4e2dad-478b-422b-841d-f7dab32b5a45 rw rootfstype=ext4 rootflags=noatime amd_pstate=active amdgpu.ppfeaturemask=0xffffffff amdgpu.dpm=1 amdgpu.powerplay=1 transparent_hugepage=always idle=nomwait mitigations=off zswap.enabled=0</code>
-<button class="copy-btn" onclick="copyCode(this)">📋</button>
-</pre>
-</details>
-
-<!-- ============ GPU PERFORMANCE ============ -->
-<details>
-<summary>🎮 Best GPU Performance</summary>
-
-<pre>
-<code>sudo nano /etc/environment</code>
-<button class="copy-btn" onclick="copyCode(this)">📋</button>
-</pre>
-
-<pre>
-<code>RADV_PERFTEST=aco
-RADV_DEBUG=nohiz
-RADV_FORCE_VRS=1
-RADV_SHADER_CACHE_SYNC=0
-MESA_GLTHREAD=true</code>
-<button class="copy-btn" onclick="copyCode(this)">📋</button>
-</pre>
-
-<pre>
-<code>echo high | sudo tee /sys/class/drm/card0/device/power_dpm_force_performance_level</code>
-<button class="copy-btn" onclick="copyCode(this)">📋</button>
-</pre>
-</details>
-
 <!-- ============ PS5 AUDIO LOOPBACK ============ -->
 <details>
 <summary>🔊 PS5 Audio Loopback Script</summary>
@@ -235,21 +181,6 @@ else
     echo enabled > "$STATE_FILE"
     pactl unload-module "$(cat "$LOOPBACK_FILE")"
 fi</code>
-<button class="copy-btn" onclick="copyCode(this)">📋</button>
-</pre>
-</details>
-
-<!-- ============ KEYBOARD FIX ============ -->
-<details>
-<summary>🎹 Keyboard Fix</summary>
-
-<pre>
-<code>sudo nano /etc/modprobe.d/hid_apple.conf</code>
-<button class="copy-btn" onclick="copyCode(this)">📋</button>
-</pre>
-
-<pre>
-<code>options hid_apple swap_opt_cmd=1 fnmode=2</code>
 <button class="copy-btn" onclick="copyCode(this)">📋</button>
 </pre>
 </details>
